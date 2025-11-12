@@ -1,24 +1,27 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Stack, useRouter } from 'expo-router';
+import React from 'react';
+import AuthScreen from './auth';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+function RouteGuard({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+    const isAuthenticated = false; // Always false for this example
+
+    if (!isAuthenticated) {
+       
+        return <AuthScreen />;
+    }
+
+    // CORRECT: Return the children (the main app content) only if authenticated
+    return <>{children}</>;
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <RouteGuard>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    </RouteGuard>
+  )
 }
