@@ -1,11 +1,13 @@
+import { AuthProvider, useAuth } from '@/lib/auth-context';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import AuthScreen from './auth';
 
 function RouteGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const {user} = useAuth()
 
-    const isAuthenticated = false; // Always false for this example
+    const isAuthenticated = user; // Always false for this example
 
     if (!isAuthenticated) {
        
@@ -18,10 +20,12 @@ function RouteGuard({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout() {
   return (
-    <RouteGuard>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </RouteGuard>
+    <AuthProvider>
+      <RouteGuard>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </RouteGuard>
+    </AuthProvider>
   )
 }
