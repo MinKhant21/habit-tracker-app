@@ -71,8 +71,6 @@ const AuthScreen = () => {
                         style={styles.input}
                         mode="outlined"
                         onChangeText={(text)=>setPassword(text)}
-
-
                      />
 
                      {
